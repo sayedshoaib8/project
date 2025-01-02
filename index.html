@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <form>
+                <div class="display">
+                    <input type="text" id="result" disabled />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="7" onclick="appendValue('7')" />
+                    <input type="button" value="8" onclick="appendValue('8')" />
+                    <input type="button" value="9" onclick="appendValue('9')" />
+                    <input type="button" value="/" onclick="appendValue('/')" />
+
+                    <input type="button" value="4" onclick="appendValue('4')" />
+                    <input type="button" value="5" onclick="appendValue('5')" />
+                    <input type="button" value="6" onclick="appendValue('6')" />
+                    <input type="button" value="*" onclick="appendValue('*')" />
+
+                    <input type="button" value="1" onclick="appendValue('1')" />
+                    <input type="button" value="2" onclick="appendValue('2')" />
+                    <input type="button" value="3" onclick="appendValue('3')" />
+                    <input type="button" value="-" onclick="appendValue('-')" />
+
+                    <input type="button" value="C" onclick="clearResult()" />
+                    <input type="button" value="0" onclick="appendValue('0')" />
+                    <input type="button" value="=" onclick="calculateResult()" />
+                    <input type="button" value="+" onclick="appendValue('+')" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const resultField = document.getElementById('result');
+
+        function appendValue(value) {
+            const lastChar = resultField.value.slice(-1);
+            if ("/*-+".includes(lastChar) && "/*-+".includes(value)) {
+                return; // Prevent consecutive operators
+            }
+            resultField.value += value;
+        }
+
+        function clearResult() {
+            resultField.value = '';
+        }
+
+        function calculateResult() {
+            try {
+                if (resultField.value.trim() === '') return; // Prevent empty evaluation
+                resultField.value = eval(resultField.value);
+            } catch (error) {
+                resultField.value = 'Error';
+            }
+        }
+
+        // Add keyboard support
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            if ("0123456789/*-+".includes(key)) {
+                appendValue(key);
+            } else if (key === "Enter") {
+                calculateResult();
+            } else if (key === "Backspace") {
+                resultField.value = resultField.value.slice(0, -1);
+            } else if (key === "Escape") {
+                clearResult();
+            }
+        });
+    </script>
+</body>
+</html>
